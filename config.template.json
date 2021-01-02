@@ -1,0 +1,10 @@
+{
+    "maxDeltaMins": 30,
+    "queryIntervalSecs": 60,
+    "servers": [
+        {
+            "name": "localhost",
+            "host": "http://localhost:30120"
+        }
+    ]
+}

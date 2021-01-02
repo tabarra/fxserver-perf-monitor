@@ -1,0 +1,26 @@
+{
+  "name": "fxserver-perf-monitor",
+  "version": "1.0.0",
+  "description": "Collect and display (using D3.js) the performance of an FXServer.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tabarra/fxserver-perf-monitor.git"
+  },
+  "keywords": [
+    "fxserver"
+  ],
+  "author": "André Tabarra",
+  "license": "CC-BY-NC-SA-4.0",
+  "bugs": {
+    "url": "https://github.com/tabarra/fxserver-perf-monitor/issues"
+  },
+  "homepage": "https://github.com/tabarra/fxserver-perf-monitor#readme",
+  "dependencies": {
+    "fs-extra": "^9.0.1",
+    "got": "^11.8.1"
+  }
+}
