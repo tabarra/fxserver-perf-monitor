@@ -21,6 +21,13 @@ const collectServerSnapshot = async (serverName, serverHost) => {
     //Get performance data
     const currPerfRaw = await got(`${serverHost}/perf/`).text();
     const currPerfData = parsePerf(currPerfRaw);
+    if(
+        !validatePerfThreadData(currPerfData.svSync) ||
+        !validatePerfThreadData(currPerfData.svNetwork) ||
+        !validatePerfThreadData(currPerfData.svMain)
+    ){
+        throw new Error(`invalid or incomplete /perf/ response`);
+    }
 
     //Get cache
     const perfsFilePath = `perfs/${serverName}.json`;
@@ -95,7 +102,7 @@ const collectServerSnapshot = async (serverName, serverHost) => {
             await collectServerSnapshot(server.name, server.host)
         } catch (error) {
             log(`[${server.name}] Failed with error: ${error.message}`);
-            dir(error)
+            // dir(error)
         }
     }
 

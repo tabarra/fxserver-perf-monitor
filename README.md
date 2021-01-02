@@ -8,11 +8,11 @@
         <a href="https://discord.gg/f3TsfvD"><img src="https://discordapp.com/api/guilds/577993482761928734/widget.png?style=shield"></img></a>
     </h4>
     <p align="center">
-        Collect and display (using D3.js) the performance of an FXServer.
+        <b>Collect and display (using D3.js) the performance of an FXServer.</b>
     </p>
 </p>
 
-
+## Foot Note... ish
 I wrote some code to help me build the heatmap for [txAdmin](https://github.com/tabarra/txAdmin), but it ended up acceptable so why not share it?!  
 I do not have the intention to update this repository... unless some people find it useful.  
 Also I am fully aware that I could use Grafana for this, but it wouldn't work for txAdmin.  
