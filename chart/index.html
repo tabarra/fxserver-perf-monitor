@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chart</title>
+    <style>
+        body{
+            font-family: "Segoe UI", sans-serif;
+            background-color: aliceblue;
+            text-align: center;
+        }
+        #d3-container {
+            max-width: 1420px;
+            margin: auto;
+            background-color: rgb(207, 233, 255);
+        }
+
+        /* Improve it */
+        /* .axis path,
+        .axis line {
+            stroke: none;
+            fill: none;
+        }
+        .axis text {
+            fill: dimgrey;
+            font-size: 9px;
+        } */
+    </style>
+</head>
+
+<body>
+    <h1 id="title"></h1>
+    <div id="d3-container"></div>
+    <small id="footerMessage"></small>
+
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script type="module">
+        import { drawHeatmap } from "./chart.js";
+
+        //Configs
+        const serverName = 'localhost';
+        const maxDeltaTime = 64; //64?
+
+        //Elements
+        const title = document.getElementById('title');
+        const footerMessage = document.getElementById('footerMessage');
+        const d3Container = document.getElementById('d3-container');
+
+        (async () => {
+            //Prepare data
+            const rawPerfData = await fetch(`/perfs/${serverName}.json`);
+            const parsedPerfData = JSON.parse(await rawPerfData.text());
+            let perfData = parsedPerfData.slice(-maxDeltaTime);
+            // perfData = parsedPerfData;
+            // console.log(perfData[0])
+            // console.log(perfData[1])
+            // console.log(perfData[2])
+
+            
+            //TODO: isso devia ficar no backend
+            //Process data & filter thread
+            // const threadName = 'svNetwork';
+            // const threadName = 'svSync';
+            const threadName = 'svMain';
+            perfData = perfData.map(s => {
+                return {
+                    ts: s.timestamp,
+                    clients: s.clients,
+                    avgTime: s.perf[threadName].sum / s.perf[threadName].count,
+                    buckets: s.perf[threadName].buckets,
+                }
+            })
+
+            
+            //Render page
+            title.textContent = `${serverName} heatmap from last ${perfData.length} minutes`;
+            const tsStart = Date.now()
+            drawHeatmap(d3Container, perfData);
+            const duration = Date.now() - tsStart;
+            footerMessage.textContent = `Took ${duration}ms to draw ${perfData.length*15} rects from ${perfData.length} snapshots.`;
+        })();
+    </script>
+</body>
+
+</html>
