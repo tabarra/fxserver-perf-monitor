@@ -44,3 +44,15 @@ tickTime_bucket{name="svMain",le="7.500000"} 873550
 tickTime_bucket{name="svMain",le="10.000000"} 873550
 tickTime_bucket{name="svMain",le="+Inf"} 873550
 ```
+
+References:
+```
+The one with the rows in groups
+https://observablehq.com/@sjengle/zillow-affordability-heatmap
+
+Vega library
+https://observablehq.com/@andreaskdk/song-tempo-heatmap
+
+Colors!
+https://github.com/d3/d3-scale-chromatic/blob/v2.0.0/README.md#schemeCategory10
+```

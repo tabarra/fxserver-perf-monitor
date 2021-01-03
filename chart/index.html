@@ -14,19 +14,27 @@
         #d3-container {
             max-width: 1420px;
             margin: auto;
-            background-color: rgb(207, 233, 255);
+            /* background-color: rgb(207, 233, 255); */
         }
 
-        /* Improve it */
-        /* .axis path,
-        .axis line {
+        #x-axis path{
+            stroke: none;
+            fill: none;
+        }
+        #y-axis path,
+        #y-axis line {
             stroke: none;
             fill: none;
         }
         .axis text {
             fill: dimgrey;
             font-size: 9px;
-        } */
+        }
+        .axisTitle {
+            fill: dimgrey;
+            font-size: 16px;
+            font-weight: 500;
+        }
     </style>
 </head>
 
@@ -54,9 +62,6 @@
             const parsedPerfData = JSON.parse(await rawPerfData.text());
             let perfData = parsedPerfData.slice(-maxDeltaTime);
             // perfData = parsedPerfData;
-            // console.log(perfData[0])
-            // console.log(perfData[1])
-            // console.log(perfData[2])
 
             
             //TODO: isso devia ficar no backend
