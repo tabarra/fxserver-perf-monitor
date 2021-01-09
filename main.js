@@ -70,6 +70,7 @@ const collectServerSnapshot = async (serverName, serverHost) => {
         currPerfDiff[thread].buckets = bucketsFrequencies;
     })
     const currSnapshot = {
+        islinear,
         timestamp: now,
         mainTickCounter: currPerfData.svMain.count,
         clients: dynamicData.clients,

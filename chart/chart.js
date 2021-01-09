@@ -7,15 +7,18 @@ const yLabels = ['0.005', '0.010', '0.025', '0.050', '0.075', '0.100', '0.250', 
 // const yLabels = ['5 μs', '10 μs', '25 μs', '50 μs', '75 μs', '0.1 ms', '0.25 ms', '0.5 ms', '0.75 ms', '1 ms', '2.5 ms', '5 ms', '7.5 ms', '10 ms', '+Inf'];
 
 
-const drawHeatmap = (d3Container, perfData) => {
-    //Settings -- probably move this 
-    const width = d3Container.offsetWidth;
-    const timeTickInterval = 15;
-    const height = 340;
-    const margin = { top: 10, right: 55, bottom: 20, left: 75 };
-    const color = d3.scaleSequential(d3.interpolateInferno)
-        .domain([0, 1])
-
+const drawHeatmap = (d3Container, perfData, options = {}) => {
+    //Options
+    if (typeof options.margin == 'undefined') options.margin = {}
+    const margin = {
+        top: options.margin.top || 10,
+        right: options.margin.right || 55,
+        bottom: options.margin.bottom || 20,
+        left: options.margin.left || 75
+    };
+    const height = options.height || 340;
+    const colorScheme = options.colorScheme || d3.interpolateInferno;
+    const timeTickInterval = options.timeTickInterval || 15;
 
     //Flatten data
     const snapTimes = [];
@@ -53,9 +56,14 @@ const drawHeatmap = (d3Container, perfData) => {
     }
     // console.log(snapTimes)
 
-    //Creating SVG
+
+    //Macro drawing stuff
+    const width = d3Container.offsetWidth;
+    const color = d3.scaleSequential(colorScheme)
+        .domain([0, 1])
     const svg = d3.create("svg")
         .attr("viewBox", [0, 0, width, height]);
+
 
     // X Axis - Time
     const timeScale = d3.scaleBand()
@@ -111,7 +119,13 @@ const drawHeatmap = (d3Container, perfData) => {
     const y2Padding = Math.round(tickBucketsScale.bandwidth() / 2)
     const clientsScale = d3.scaleLinear()
         .domain([0, d3.max(snapClients.map(t => t.c))])
-        .range([height - margin.bottom - y2Padding, margin.top + y2Padding])
+        .range([height - margin.bottom - y2Padding, margin.top + y2Padding]);
+
+    svg.append("g")
+        .attr("transform", translate(width - margin.right, 0))
+        .attr("id", "y2-axis")
+        .attr("class", "axis")
+        .call(d3.axisRight(clientsScale));
 
     const clientsTitle = svg.append('g')
         .attr("transform", 'rotate(-90) ' + translate(0 - (height / 2), width - 25))
@@ -129,16 +143,9 @@ const drawHeatmap = (d3Container, perfData) => {
         .attr("stroke", "dimgrey")
         .attr("stroke-width", 2)
 
-    const clientsAxis = d3.axisRight(clientsScale)
-    svg.append("g")
-        .attr("transform", translate(width - margin.right, 0))
-        .attr("id", "y2-axis")
-        .attr("class", "axis")
-        .call(clientsAxis);
-
     const clientsLine = d3.line()
         .defined(d => !isNaN(d.c))
-        .x(d => timeScale(d.x))
+        .x(d => timeScale(d.x)+2.5) // very small offset
         .y(d => clientsScale(d.c))
     svg.append("path")
         .datum(snapClients)
@@ -162,4 +169,4 @@ const drawHeatmap = (d3Container, perfData) => {
 }
 
 
-export { drawHeatmap }
+export { drawHeatmap };

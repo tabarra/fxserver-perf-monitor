@@ -80,10 +80,17 @@
 
             
             //Render page
-            title.textContent = `${serverName} heatmap from last ${perfData.length} minutes`;
-            const tsStart = Date.now()
-            drawHeatmap(d3Container, perfData);
+            const chartOptions = {
+                // colorScheme: d3.interpolateInferno,
+                // colorScheme: d3.interpolateTurbo,
+                colorScheme: d3.interpolateViridis,
+                // colorScheme: d3.xxxxx,
+            }
+            const tsStart = Date.now();
+            drawHeatmap(d3Container, perfData, chartOptions);
             const duration = Date.now() - tsStart;
+
+            title.textContent = `${serverName} heatmap from last ${perfData.length} minutes`;
             footerMessage.textContent = `Took ${duration}ms to draw ${perfData.length*15} rects from ${perfData.length} snapshots.`;
         })();
     </script>
